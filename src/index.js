@@ -42,6 +42,7 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
+    // class constructor
     constructor(props){
         super(props)
         this.state = {
@@ -49,11 +50,13 @@ class Game extends React.Component {
                 squares: Array(9).fill(null),
             }],
             xIsNext: true,
+            stepNumber: 0,
         }
     }
 
+    // callback function called when a click is performed on a square
     handleClick(i) {
-        const history = this.state.history
+        const history = this.state.history.slice(0, this.state.stepNumber+1)
         const squares = history[history.length-1].squares.slice()
 
         // ignore click when game over or square already filled
@@ -63,20 +66,40 @@ class Game extends React.Component {
 
         // edit the square content
         squares[i] = (this.state.xIsNext ? 'X' : 'O')
-
         
         // change state
-        const newHistory = history.slice()
-        newHistory.push({squares})
+        history.push({squares})
         this.setState({
-            history: newHistory,
+            history: history,
             xIsNext: !this.state.xIsNext,
+            stepNumber: history.length-1
         })
+    }
+
+    // callback function called to perform history movement
+    jumpTo(step){
+        this.setState({
+            stepNumber: step,
+            xIsNext: (step%2) === 0,
+        })
+    }
+
+    // render moves section
+    renderMoves(){
+        const history = this.state.history
+        const moves = history.map((step, move) => {
+            const desc = move != 0 ? `Go to move ${move}` : 'Go to game start'
+            return <li key={move}>
+                <button onClick={() => this.jumpTo(move)}>{desc}</button>
+            </li>
+        })
+
+        return moves
     }
 
     render() {
         const history = this.state.history
-        const current = history[history.length-1]
+        const current = history[this.state.stepNumber]
         const winner = gameOver(current.squares)
 
         // define game status
@@ -98,7 +121,7 @@ class Game extends React.Component {
             <div className="game-info">
                 <div>{ status }</div>
                 <div>History size: {history.length}</div>
-                <ol>{/* TODO */}</ol>
+                <ol>{this.renderMoves()}</ol>
             </div>
         </div>
         )
