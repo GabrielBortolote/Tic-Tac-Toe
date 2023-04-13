@@ -99,7 +99,14 @@ I added one more attribute into the game state attribute, the **ascending** attr
 
 ![game play to feature 4](./README_data/game_play_4.gif)
 
+
+### 5. Highlight victory
+
+To develop this feature I had to do some refactoring. First thing, the function that calculates the end of the game, the *gameOver* function, implemented inside *game.js* file was returning only the winner´s label, but now we need to know witch squares caused the victory, so I incremented the *gameOver* function return, passing this new information from *Game* to *Board* component and then rendering the squares on the board using a new class named *Highlight* for that squares that were the winning cause. See the result:
+
+![game play to feature 5](./README_data/game_play_5.gif)
+
 ----------------------
 
-Check out the code
+Check out the code.
 Enjoy :)

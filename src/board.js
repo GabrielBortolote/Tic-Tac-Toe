@@ -1,6 +1,5 @@
 // third
 import React from 'react'
-import ReactDOM from 'react-dom/client'
 
 // local
 import Square from './square.js'
@@ -18,6 +17,7 @@ export default class Board extends React.Component {
                         key={squareIndex}
                         value={this.props.squares[squareIndex]}
                         onClick={() => this.props.onClick(squareIndex)}
+                        highlight={this.props.winnerSquares.includes(squareIndex)}
                     />
                 )
             }

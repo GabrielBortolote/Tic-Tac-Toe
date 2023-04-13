@@ -26,3 +26,20 @@ table.Current{
 table.Current:hover{
     background-color: rgb(105, 105, 105);
 }
+
+.status {
+    margin-bottom: 10px;
+}
+
+.kbd-navigation .square:focus {
+    background: #ddd;
+}
+
+.game {
+    display: flex;
+    flex-direction: row;
+}
+
+.game-info {
+    margin-left: 20px;
+}

@@ -1,6 +1,5 @@
 // third
 import React from 'react'
-import ReactDOM from 'react-dom/client'
 
 // local
 import './styles/game.css'
@@ -26,7 +25,7 @@ export default class Game extends React.Component {
         const squares = history[history.length-1].squares.slice()
 
         // ignore click when game over or square already filled
-        if (gameOver(squares) || squares[i]){
+        if (gameOver(squares)[0] || squares[i]){
             return;
         }
 
@@ -75,7 +74,7 @@ export default class Game extends React.Component {
                 rows.push(<tr key={i}>{renderRow(i, step)}</tr>)
             }
             return <table
-                className={'Move ' + (stepIndex == this.state.stepNumber ? 'Current' : '')}
+                className={'Move' + (stepIndex == this.state.stepNumber ? ' Current' : '')}
                 onClick={() => this.jumpTo(stepIndex)}
             ><tbody>
                 {rows}
@@ -97,7 +96,7 @@ export default class Game extends React.Component {
     render() { 
         const history = this.state.history
         const current = history[this.state.stepNumber]
-        const winner = gameOver(current.squares)
+        const [winner, winnerSquares] = gameOver(current.squares)
 
         // define game status
         let status
@@ -113,6 +112,7 @@ export default class Game extends React.Component {
                 <Board
                     squares={current.squares}
                     onClick={(i) => this.handleClick(i)}
+                    winnerSquares={winnerSquares}
                 />
             </div>
             <div className="game-info">
@@ -141,8 +141,11 @@ function gameOver(squares) {
     for (let i = 0; i < lines.length; i++) {
       const [a, b, c] = lines[i]
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a]
+        return [
+            squares[a],     // who won (X or O)
+            [a, b, c]       // winner squares indexes
+        ]
       }
     }
-    return null
+    return [null, []]
 }
