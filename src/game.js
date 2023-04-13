@@ -43,7 +43,6 @@ export default class Game extends React.Component {
 
     // callback function called to perform history movement
     jumpTo(step){
-        console.log('jump to')
         this.setState({
             stepNumber: step,
             xIsNext: (step%2) === 0,
@@ -52,7 +51,6 @@ export default class Game extends React.Component {
 
     // history
     renderMoves(){
-        console.log('render moves')
         const history = this.state.history
 
         const renderRow = (nRow, step) => {
@@ -77,7 +75,6 @@ export default class Game extends React.Component {
         }
         
         const moves = history.map((step, stepIndex) => {
-            console.log('moves')
             return <li key={stepIndex}>
                 {renderTable(step, stepIndex)}
             </li>
@@ -87,7 +84,6 @@ export default class Game extends React.Component {
     }
 
     render() { 
-        console.log('render')
         const history = this.state.history
         const current = history[this.state.stepNumber]
         const winner = gameOver(current.squares)

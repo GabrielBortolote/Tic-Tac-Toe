@@ -34,12 +34,64 @@ Enjoy :)
 
 ### 1. Improve history display
 
-To develop this feature it was necessary to remove the history buttons and replace then by tables, each table is displaying an old game state stored in the history. I applied some extra css to display legible tables.
+I removed the history buttons and replaced then by tables, each table is displaying an old game state stored in the history. I applied some extra css to display legible tables.
 
 ![game play to feature 1](./README_data/game_play_1.gif)
 
 ### 2. Bold selected history
 
-To develop this feature I just had to apply conditional css based on the current history selected state.
+I applied conditional css based on the current history selected state.
 
 ![game play to feature 2](./README_data/game_play_2.gif)
+
+### 3. Use loops to generate squares
+
+I removed the static logic generating the Squares and replace it with a logic using two loops, one for rows and one for cols. Look at the snippets:
+
+Old static logic:
+
+```
+<div className="board-row">
+    {this.renderSquare(0)}
+    {this.renderSquare(1)}
+    {this.renderSquare(2)}
+</div>
+<div className="board-row">
+    {this.renderSquare(3)}
+    {this.renderSquare(4)}
+    {this.renderSquare(5)}
+</div>
+<div className="board-row">
+    {this.renderSquare(6)}
+    {this.renderSquare(7)}
+    {this.renderSquare(8)}
+</div>
+```
+
+Dynamic new logic:
+
+```
+function renderRows(){
+    const rows = []
+    for (let i = 0; i < 3; i++) {
+        const cols = []
+        for (let j = 0; j < 3; j++) {
+            const squareIndex = j + 3*i
+            cols.push(
+                <Square
+                    key={squareIndex}
+                    value={this.props.squares[squareIndex]}
+                    onClick={() => this.props.onClick(squareIndex)}
+                />
+            )
+        }
+        rows.push(
+            <div key={i} className="board-row">
+                {cols}
+            </div>
+        )
+        
+    }
+    return rows
+}
+```
