@@ -100,7 +100,9 @@ export default class Game extends React.Component {
 
         // define game status
         let status
-        if (winner){
+        if (winner == 'draw'){
+            status = 'Draw'
+        } else if (winner){
             status = 'Winner: ' + winner
         } else {
             status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
@@ -128,6 +130,8 @@ export default class Game extends React.Component {
 }
 
 function gameOver(squares) {
+
+    // all possible victories
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -147,5 +151,11 @@ function gameOver(squares) {
         ]
       }
     }
+
+    // draw
+    if (!squares.includes(null)){
+        return ['draw', []]
+    }
+
     return [null, []]
 }
