@@ -68,7 +68,10 @@ export default class Game extends React.Component {
             for(let i = 0; i < 3; i++){
                 rows.push(<tr key={i}>{renderRow(i, step)}</tr>)
             }
-            return <table className='Move' onClick={() => this.jumpTo(stepIndex)}><tbody>
+            return <table
+                className={'Move ' + (stepIndex == this.state.stepNumber ? 'Current' : '')}
+                onClick={() => this.jumpTo(stepIndex)}
+            ><tbody>
                 {rows}
             </tbody></table>
         }

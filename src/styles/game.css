@@ -1,6 +1,7 @@
 table.Move{
     cursor: pointer;
     font-size: 10px;
+    color: black;
 }
 
 table.Move:hover{
@@ -11,8 +12,17 @@ table.Move td{
     width: 10px;
     height: 10px;
     text-align: center;
+    background-color: white;
 }
 
 table.Move, table.Move td{
     border: 1px solid black;
+}
+
+table.Current{
+    background-color: black;
+}
+
+table.Current:hover{
+    background-color: rgb(105, 105, 105);
 }

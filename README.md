@@ -10,7 +10,7 @@ This project was created to practice react front end skills. The full tutorial t
 
 First of all I created the game using the reactjs.org [provided tutorial](ttps://legacy.reactjs.org/tutorial/tutorial.html), the result is a simple TIC TAC TOE game, with the most basic appearance.
 
-![game play basic game](./README_data/game_play_1.gif/)
+![game play to feature 0](./README_data/game_play_0.gif/)
 
 To make the things funnier I decided to create some improvement tasks and then work on then one by one. The tutorial by it self already suggest a couple of new features to challenge the developers, here they are:
 
@@ -36,5 +36,10 @@ Enjoy :)
 
 To develop this feature it was necessary to remove the history buttons and replace then by tables, each table is displaying an old game state stored in the history. I applied some extra css to display legible tables.
 
+![game play to feature 1](./README_data/game_play_1.gif)
 
-![game play basic game](./README_data/game_play_2.gif/)
+### 2. Bold selected history
+
+To develop this feature I just had to apply conditional css based on the current history selected state.
+
+![game play to feature 2](./README_data/game_play_2.gif)
