@@ -3,7 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 // local
-import './index.css'
+import './styles/index.css'
 import Game from './game.js'
 
 // ========================================

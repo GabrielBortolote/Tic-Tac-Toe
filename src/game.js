@@ -3,6 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 
 // local
+import './styles/game.css'
 import Board from './board.js'
 
 export default class Game extends React.Component {
@@ -42,26 +43,48 @@ export default class Game extends React.Component {
 
     // callback function called to perform history movement
     jumpTo(step){
+        console.log('jump to')
         this.setState({
             stepNumber: step,
             xIsNext: (step%2) === 0,
         })
     }
 
-    // render moves section
+    // history
     renderMoves(){
+        console.log('render moves')
         const history = this.state.history
-        const moves = history.map((step, move) => {
-            const desc = move != 0 ? `Go to move ${move}` : 'Go to game start'
-            return <li key={move}>
-                <button onClick={() => this.jumpTo(move)}>{desc}</button>
+
+        const renderRow = (nRow, step) => {
+            const cols = []
+            for(let i = 0; i < 3; i++) {
+                cols.push(<td key={i}>{step.squares[i + 3*nRow]}</td>)
+            }
+            return cols
+        }
+    
+        const renderTable = (step, stepIndex) => {
+            const rows = []
+            for(let i = 0; i < 3; i++){
+                rows.push(<tr key={i}>{renderRow(i, step)}</tr>)
+            }
+            return <table className='Move' onClick={() => this.jumpTo(stepIndex)}><tbody>
+                {rows}
+            </tbody></table>
+        }
+        
+        const moves = history.map((step, stepIndex) => {
+            console.log('moves')
+            return <li key={stepIndex}>
+                {renderTable(step, stepIndex)}
             </li>
         })
 
         return moves
     }
 
-    render() {
+    render() { 
+        console.log('render')
         const history = this.state.history
         const current = history[this.state.stepNumber]
         const winner = gameOver(current.squares)

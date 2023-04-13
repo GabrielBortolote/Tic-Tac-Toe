@@ -31,3 +31,10 @@ Beside these additional tasks I decided to create some challenging tasks by myse
 
 Check out the code
 Enjoy :)
+
+### 1. Improve history display
+
+To develop this feature it was necessary to remove the history buttons and replace then by tables, each table is displaying an old game state stored in the history. I applied some extra css to display legible tables.
+
+
+![game play basic game](./README_data/game_play_2.gif/)
