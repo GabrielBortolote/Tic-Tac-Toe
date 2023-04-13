@@ -16,6 +16,7 @@ export default class Game extends React.Component {
             }],
             xIsNext: true,
             stepNumber: 0,
+            ascending: true,
         }
     }
 
@@ -49,6 +50,13 @@ export default class Game extends React.Component {
         })
     }
 
+    // sort button callback
+    handleSort(){
+        this.setState({
+            ascending: !this.state.ascending
+        })
+    }
+
     // history
     renderMoves(){
         const history = this.state.history
@@ -74,12 +82,15 @@ export default class Game extends React.Component {
             </tbody></table>
         }
         
-        const moves = history.map((step, stepIndex) => {
+        let moves = history.map((step, stepIndex) => {
             return <li key={stepIndex}>
                 {renderTable(step, stepIndex)}
             </li>
         })
 
+        if (!this.state.ascending){
+            moves = moves.reverse()
+        }
         return moves
     }
 
@@ -106,8 +117,10 @@ export default class Game extends React.Component {
             </div>
             <div className="game-info">
                 <div>{ status }</div>
-                <div>History size: {history.length}</div>
-                <ol>{this.renderMoves()}</ol>
+                <button onClick={() => this.handleSort()}>
+                    {(!this.state.ascending) ? 'Ascending' : 'Descending'}
+                </button>
+                <ol reversed={!this.state.ascending}>{this.renderMoves()}</ol>
             </div>
         </div>
         )

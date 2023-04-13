@@ -29,9 +29,6 @@ Beside these additional tasks I decided to create some challenging tasks by myse
 10. Trace a line over the game indicating the line that won the game.
 11. Make a fun animation with a congratulation warning on winning.
 
-Check out the code
-Enjoy :)
-
 ### 1. Improve history display
 
 I removed the history buttons and replaced then by tables, each table is displaying an old game state stored in the history. I applied some extra css to display legible tables.
@@ -95,3 +92,14 @@ function renderRows(){
     return rows
 }
 ```
+
+### 4. Sort moves
+
+I added one more attribute into the game state attribute, the **ascending** attribute, then I created a callback function in a button to toggle this new state property. To change the order from ascending to descending I just used the function [Array.prototype.reverse()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse) and to change the automatic numbers inserted by the *ol* html tag I used the property [*reversed*](https://www.w3schools.com/tags/att_ol_reversed.asp). See the result:
+
+![game play to feature 4](./README_data/game_play_4.gif)
+
+----------------------
+
+Check out the code
+Enjoy :)
