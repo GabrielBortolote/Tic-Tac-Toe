@@ -14,19 +14,15 @@ const SquareButton = styled.button`
     padding: 0;
     text-align: center;
     width: 34px;
+    color: ${({highlight}) => {
+        return (highlight) ? "red" : "inherit"
+    }};
 
-    &:focus {
-        outline: none;
-    }
-
-    &.Highlight {
-        color: red;
-    }
 `
 
 export default function Square(props){
     return <SquareButton
-        className={(props.highlight ? "Highlight" : "")}
+        highlight={props.highlight}
         onClick={props.onClick}
     >
         {props.value}

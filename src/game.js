@@ -22,9 +22,12 @@ const MoveTable = styled.table`
     font-size: 10px;
     color: black;
     border: 1px solid black;
+    background-color: ${({current}) => {
+        return (current) ? "black": "white"}};
 
     &:hover{
-        background-color: rgb(173, 173, 173);
+        background-color: ${({current}) => {
+            return (current) ? "rgb(105, 105, 105)": "rgb(173, 173, 173)"}};
     }
 
     td{
@@ -33,14 +36,6 @@ const MoveTable = styled.table`
         text-align: center;
         background-color: white;
         border: 1px solid black;
-    }
-
-    &.Current{
-        background-color: black;
-    }
-
-    &.Current:hover{
-        background-color: rgb(105, 105, 105);
     }
 `
 
@@ -110,7 +105,7 @@ export default class Game extends React.Component {
             rows.push(<tr key={i}>{this.renderRow(i, step)}</tr>)
         }
         return <MoveTable
-            className={(stepIndex == this.state.stepNumber ? 'Current' : '')}
+            current={stepIndex == this.state.stepNumber}
             onClick={() => this.jumpTo(stepIndex)}
         ><tbody>
             {rows}
