@@ -1,9 +1,48 @@
 // third
 import React from 'react'
+import styled from 'styled-components'
 
 // local
-import './styles/game.css'
 import Board from './board.js'
+
+// styles
+const SuperWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
+const GameInfo = styled.div`
+    margin-left: 20px;
+`
+
+const Status = styled.div``
+
+const MoveTable = styled.table`
+    cursor: pointer;
+    font-size: 10px;
+    color: black;
+    border: 1px solid black;
+
+    &:hover{
+        background-color: rgb(173, 173, 173);
+    }
+
+    td{
+        width: 10px;
+        height: 10px;
+        text-align: center;
+        background-color: white;
+        border: 1px solid black;
+    }
+
+    &.Current{
+        background-color: black;
+    }
+
+    &.Current:hover{
+        background-color: rgb(105, 105, 105);
+    }
+`
 
 export default class Game extends React.Component {
     // class constructor
@@ -56,34 +95,34 @@ export default class Game extends React.Component {
         })
     }
 
-    // history
+    // render history
+    renderRow(nRow, step){
+        const cols = []
+        for(let i = 0; i < 3; i++) {
+            cols.push(<td key={i}>{step.squares[i + 3*nRow]}</td>)
+        }
+        return cols
+    }
+
+    renderTable(step, stepIndex){
+        const rows = []
+        for(let i = 0; i < 3; i++){
+            rows.push(<tr key={i}>{this.renderRow(i, step)}</tr>)
+        }
+        return <MoveTable
+            className={(stepIndex == this.state.stepNumber ? 'Current' : '')}
+            onClick={() => this.jumpTo(stepIndex)}
+        ><tbody>
+            {rows}
+        </tbody></MoveTable>
+    }
+
     renderMoves(){
         const history = this.state.history
-
-        const renderRow = (nRow, step) => {
-            const cols = []
-            for(let i = 0; i < 3; i++) {
-                cols.push(<td key={i}>{step.squares[i + 3*nRow]}</td>)
-            }
-            return cols
-        }
-    
-        const renderTable = (step, stepIndex) => {
-            const rows = []
-            for(let i = 0; i < 3; i++){
-                rows.push(<tr key={i}>{renderRow(i, step)}</tr>)
-            }
-            return <table
-                className={'Move' + (stepIndex == this.state.stepNumber ? ' Current' : '')}
-                onClick={() => this.jumpTo(stepIndex)}
-            ><tbody>
-                {rows}
-            </tbody></table>
-        }
         
         let moves = history.map((step, stepIndex) => {
             return <li key={stepIndex}>
-                {renderTable(step, stepIndex)}
+                {this.renderTable(step, stepIndex)}
             </li>
         })
 
@@ -109,22 +148,20 @@ export default class Game extends React.Component {
         }
 
         return (
-        <div className="game">
-            <div className="game-board">
-                <Board
-                    squares={current.squares}
-                    onClick={(i) => this.handleClick(i)}
-                    winnerSquares={winnerSquares}
-                />
-            </div>
-            <div className="game-info">
-                <div>{ status }</div>
+        <SuperWrapper>
+            <Board
+                squares={current.squares}
+                onClick={(i) => this.handleClick(i)}
+                winnerSquares={winnerSquares}
+            />
+            <GameInfo>
+                <Status>{ status }</Status>
                 <button onClick={() => this.handleSort()}>
                     {(!this.state.ascending) ? 'Ascending' : 'Descending'}
                 </button>
                 <ol reversed={!this.state.ascending}>{this.renderMoves()}</ol>
-            </div>
-        </div>
+            </GameInfo>
+        </SuperWrapper>
         )
     }
 }
