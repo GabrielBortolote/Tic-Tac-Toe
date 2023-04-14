@@ -1,30 +1,49 @@
 //third
 import styled from 'styled-components'
+import palettes from './styles/palettes.js'
 
-const SquareButton = styled.button`
-    background: #fff;
-    border: 1px solid #999;
-    float: left;
-    font-size: 24px;
+// styles
+const stdPalette = palettes.defaultPalette
+const stdBorderSize = 5
+const stdBorderSuffix = `px solid ${stdPalette[0]}`
+
+const StyledSquare = styled.div`
+    background-color: inherit;
+    flex-grow: 1;
     font-weight: bold;
-    line-height: 34px;
-    height: 34px;
-    margin-right: -1px;
-    margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 34px;
-    color: ${({highlight}) => {
-        return (highlight) ? "red" : "inherit"
-    }};
+    border-bottom: ${({squareIndex}) => {
+        return (squareIndex < 6 ? stdBorderSize : 0)}
+    }${stdBorderSuffix};
+    border-left: ${({squareIndex}) => {
+        return (!(squareIndex % 3 == 0) ? stdBorderSize : 0)}
+    }${stdBorderSuffix};
+    position: relative;
+`
 
+const Content = styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 7vh;
+    color: ${({highlight}) => {
+        return (highlight) ? stdPalette[3] : stdPalette[0]
+    }};
 `
 
 export default function Square(props){
-    return <SquareButton
-        highlight={props.highlight}
+    return <StyledSquare
+        squareIndex={props.squareIndex}
         onClick={props.onClick}
     >
-        {props.value}
-    </SquareButton>
+        <Content highlight={props.highlight}>
+            <div>
+                {props.value}
+            </div>
+        </Content>
+    </StyledSquare>
 }

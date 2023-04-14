@@ -1,6 +1,13 @@
 body {
   font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+  margin: 0px;
+  height: 100vh;
+  width: 100vw;
+}
+
+div#root{
+  width: 100%;
+  height: 100%;
 }
 
 ol, ul {

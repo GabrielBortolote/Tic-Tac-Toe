@@ -25,9 +25,10 @@ Beside these additional tasks I decided to create some challenging tasks by myse
 
 7. Apply a beautiful CSS design instead of using a basic one.
 8. Use icons instead of simple X and O.
-9. Display time travel like frames instead of simple (col, row).
+9. Convert classes components into function components using react hooks.
 10. Trace a line over the game indicating the line that won the game.
 11. Make a fun animation with a congratulation warning on winning.
+12. Make it responsible.
 
 ### 1. Improve history display
 
@@ -110,6 +111,10 @@ To develop this feature I had to do some refactoring. First thing, the function 
 This one is pretty simple, inside the *gameOver* function I added an if statement to check if there is no empty square and nobody won, so the returned value are going to be **draw**:
 
 ![game play to feature 6](./README_data/game_play_6.gif)
+
+### 7. Styles
+
+This feature is the most interesting for me.
 
 ----------------------
 

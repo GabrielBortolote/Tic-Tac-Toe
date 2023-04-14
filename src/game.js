@@ -4,18 +4,65 @@ import styled from 'styled-components'
 
 // local
 import Board from './board.js'
+import palettes from './styles/palettes.js'
 
 // styles
+const stdPalette = palettes.defaultPalette
+
 const SuperWrapper = styled.div`
+    width: 100%;
+    height: 100%;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: ${({firstMove}) =>{
+        return (firstMove) ? 18 : 0
+    }}vh;
+    transition: padding-top 0.5s;
+    background-color: ${stdPalette[0]};
+`
+const TitleWrapper = styled.div``
+
+const Title = styled.h1`
+    color: ${stdPalette[1]};
+    font-size: 6vh;
+    margin-bottom: 0px;
+    text-align: left;
+`
+
+const SubTitle = styled.h5`
+    color: ${stdPalette[1]};
+    font-size: 2vh;
+    margin-top: 0px;
+    width: 100%;
+    text-align: right;
+`
+
+const GameWrapper = styled.div`
+    display: flex;
+    width: 30vh;
+    height: 30vh;
     flex-direction: row;
+    background-color: ${stdPalette[1]};
+    box-shadow: 16px 16px 10px -8px rgba(0,0,0,0.43);
 `
 
 const GameInfo = styled.div`
-    margin-left: 20px;
+    width: 90%;
+    padding: 0 5%;
+    margin-top: 2vh;
+    font-size: 4vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
 
-const Status = styled.div``
+const Status = styled.div`
+    color: ${stdPalette[1]};
+    margin-bottom: 4vh;
+    border: 2px dashed ${stdPalette[1]};
+    padding: 1vh;
+`
 
 const MoveTable = styled.table`
     cursor: pointer;
@@ -23,7 +70,7 @@ const MoveTable = styled.table`
     color: black;
     border: 1px solid black;
     background-color: ${({current}) => {
-        return (current) ? "black": "white"}};
+        return (current) ? "black": ""}};
 
     &:hover{
         background-color: ${({current}) => {
@@ -143,20 +190,30 @@ export default class Game extends React.Component {
         }
 
         return (
-        <SuperWrapper>
-            <Board
-                squares={current.squares}
-                onClick={(i) => this.handleClick(i)}
-                winnerSquares={winnerSquares}
-            />
-            <GameInfo>
-                <Status>{ status }</Status>
-                <button onClick={() => this.handleSort()}>
-                    {(!this.state.ascending) ? 'Ascending' : 'Descending'}
-                </button>
-                <ol reversed={!this.state.ascending}>{this.renderMoves()}</ol>
-            </GameInfo>
-        </SuperWrapper>
+            <SuperWrapper firstMove={this.state.history.length == 1}>
+                <TitleWrapper>
+                    <Title>
+                        TIC TAC TOE
+                    </Title>
+                    <SubTitle>
+                        Created by: BortoBoy
+                    </SubTitle>
+                </TitleWrapper>
+                <GameWrapper>
+                    <Board
+                        squares={current.squares}
+                        onClick={(i) => this.handleClick(i)}
+                        winnerSquares={winnerSquares}
+                    />
+                </GameWrapper>
+                <GameInfo>
+                    <Status>{ status }</Status>
+                    <button onClick={() => this.handleSort()}>
+                        {(!this.state.ascending) ? 'Ascending' : 'Descending'}
+                    </button>
+                    <ol reversed={!this.state.ascending}>{this.renderMoves()}</ol>
+                </GameInfo>
+            </SuperWrapper>
         )
     }
 }
