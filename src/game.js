@@ -8,17 +8,19 @@ import palettes from './styles/palettes.js'
 
 // styles
 const stdPalette = palettes.defaultPalette
-
+const initialPaddingTop = 18
 const SuperWrapper = styled.div`
     width: 100%;
-    height: 100%;
+    padding-top: ${({firstMove}) =>{
+        return (firstMove) ? initialPaddingTop : 0
+    }}vh;
+    min-height: ${({firstMove}) =>{
+        return (firstMove) ? 100-initialPaddingTop : 100
+    }}vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: ${({firstMove}) =>{
-        return (firstMove) ? 18 : 0
-    }}vh;
-    transition: padding-top 0.5s;
+    transition: padding-top 0.5s, height 0.5s;
     background-color: ${stdPalette[0]};
 `
 const TitleWrapper = styled.div``
