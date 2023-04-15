@@ -66,26 +66,59 @@ const Status = styled.div`
     padding: 1vh;
 `
 
+    
+const stdBorderSize = 2
+const stdBorderSuffix = `px dashed`
+const stdBorder = `${stdBorderSize}${stdBorderSuffix} ${stdPalette[1]}`
+const invisibleBorder = `${stdBorderSize}${stdBorderSuffix} ${stdPalette[0]}`
 const MoveTable = styled.table`
     cursor: pointer;
-    font-size: 10px;
-    color: black;
-    border: 1px solid black;
-    background-color: ${({current}) => {
-        return (current) ? "black": ""}};
+    font-size: 15px;
+    padding: 8px;
+    color: ${stdPalette[1]};
+    border: ${({current}) => {
+        return (current) ? stdBorder : invisibleBorder  
+    }};
 
     &:hover{
-        background-color: ${({current}) => {
-            return (current) ? "rgb(105, 105, 105)": "rgb(173, 173, 173)"}};
-    }
+        color: ${stdPalette[0]};
+        background-color: ${stdPalette[1]};
 
-    td{
-        width: 10px;
-        height: 10px;
-        text-align: center;
-        background-color: white;
-        border: 1px solid black;
+        td {
+            border-color: ${stdPalette[0]};
+        }
     }
+`
+
+const MoveRow = styled.tr`
+    margin-bottom: 8px;
+`
+
+const MoveSquare = styled.td`
+    background-color: inherit;
+    width: 4vw;
+    height: 4vw;
+    font-weight: bold;
+    padding: 0;
+    text-align: center;
+    border-bottom: ${({squareIndex}) => {
+        return (squareIndex < 6 ? stdBorderSize : 0)}
+    }${stdBorderSuffix};
+    border-left: ${({squareIndex}) => {
+        return (!(squareIndex % 3 == 0) ? stdBorderSize : 0)}
+    }${stdBorderSuffix};
+    position: relative;
+`
+
+const HistoryWrapper = styled.div`
+    width: 100%;
+`
+
+const History = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
 `
 
 export default class Game extends React.Component {
@@ -139,19 +172,19 @@ export default class Game extends React.Component {
         })
     }
 
-    // render history
-    renderRow(nRow, step){
-        const cols = []
-        for(let i = 0; i < 3; i++) {
-            cols.push(<td key={i}>{step.squares[i + 3*nRow]}</td>)
-        }
-        return cols
-    }
-
     renderTable(step, stepIndex){
         const rows = []
         for(let i = 0; i < 3; i++){
-            rows.push(<tr key={i}>{this.renderRow(i, step)}</tr>)
+            const squares = []
+            for(let j = 0; j < 3; j++) {
+                const squareIndex = i*3 + j
+                squares.push(
+                    <MoveSquare key={squareIndex} squareIndex={squareIndex}>
+                        {step.squares[squareIndex]}
+                    </MoveSquare>
+                )
+            }
+            rows.push(<MoveRow key={i}>{squares}</MoveRow>)
         }
         return <MoveTable
             current={stepIndex == this.state.stepNumber}
@@ -164,10 +197,11 @@ export default class Game extends React.Component {
     renderMoves(){
         const history = this.state.history
         
-        let moves = history.map((step, stepIndex) => {
-            return <li key={stepIndex}>
-                {this.renderTable(step, stepIndex)}
-            </li>
+        const moves = history.map((element, i) => {
+            // avoid rendering first element on history. Because is always empty
+            if (i !== 0) {
+                return this.renderTable(element, i)
+            }
         })
 
         if (!this.state.ascending){
@@ -210,10 +244,12 @@ export default class Game extends React.Component {
                 </GameWrapper>
                 <GameInfo>
                     <Status>{ status }</Status>
-                    <button onClick={() => this.handleSort()}>
-                        {(!this.state.ascending) ? 'Ascending' : 'Descending'}
-                    </button>
-                    <ol reversed={!this.state.ascending}>{this.renderMoves()}</ol>
+                    <HistoryWrapper>
+                        {/* <button onClick={() => this.handleSort()}>
+                            {(!this.state.ascending) ? 'Ascending' : 'Descending'}
+                        </button> */}
+                        <History reversed={!this.state.ascending}>{this.renderMoves()}</History>
+                    </HistoryWrapper>
                 </GameInfo>
             </SuperWrapper>
         )
