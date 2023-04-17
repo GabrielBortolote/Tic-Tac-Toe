@@ -2,6 +2,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { AiFillCaretDown } from 'react-icons/ai';
+import { MdRestartAlt } from 'react-icons/md'
 
 // local
 import Board from './board.js'
@@ -9,6 +10,7 @@ import palettes from './styles/palettes.js'
 
 // styles
 const stdPalette = palettes.defaultPalette
+const stdShadow = '16px 16px 10px -8px rgba(0,0,0,0.43);'
 const initialPaddingTop = 18
 const SuperWrapper = styled.div`
     width: 100vw;
@@ -20,12 +22,19 @@ const SuperWrapper = styled.div`
         return (firstMove) ? 100-initialPaddingTop : 100
     }}vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-evenly;
     transition: padding-top 0.5s, height 0.5s;
     background-color: ${stdPalette[0]};
 `
-const TitleWrapper = styled.div``
+const GameWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 2em;
+`
 
 const Title = styled.h1`
     color: ${stdPalette[1]};
@@ -42,32 +51,33 @@ const SubTitle = styled.h5`
     text-align: right;
 `
 
-const GameWrapper = styled.div`
+const BoardWrapper = styled.div`
     display: flex;
     width: 30vh;
     height: 30vh;
     flex-direction: row;
     background-color: ${stdPalette[1]};
-    box-shadow: 16px 16px 10px -8px rgba(0,0,0,0.43);
+    box-shadow: ${stdShadow};
 `
 
 const GameInfo = styled.div`
-    width: 100%;
-    margin-top: 2vh;
-    font-size: 4vh;
+    font-size: 2em;
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 0 2em;
+    margin-top: 1em;
 `
 
 const Status = styled.div`
+    margin-top: 1em;
+    font-size: 2em;
     color: ${stdPalette[1]};
     margin-bottom: 4vh;
     border: 2px dashed ${stdPalette[1]};
     padding: 1vh;
 `
 
-    
 const stdBorderSize = 2
 const stdBorderSuffix = `px dashed`
 const stdBorder = `${stdBorderSize}${stdBorderSuffix} ${stdPalette[1]}`
@@ -109,8 +119,8 @@ const MoveRow = styled.tr`
 
 const MoveSquare = styled.td`
     background-color: inherit;
-    width: 4vw;
-    height: 4vw;
+    width: 1em;
+    height: 1em;
     font-weight: bold;
     padding: 0;
     text-align: center;
@@ -131,11 +141,17 @@ const HistoryWrapper = styled.div`
     padding-bottom: 0.5em;
 `
     
-const HistoryTitle = styled.span`
-    font-size: 1em;
-    color: ${stdPalette[1]};
-    padding: 0.5em 0;
+const HistoryTitle = styled.button`
+    font-size: 0.8em;
+    background-color: ${stdPalette[1]};
+    border-color: ${stdPalette[1]};
+    border-size: 4px;
+    color: ${stdPalette[0]};
     cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    padding: 0.5em;
+    margin-bottom: 1em;
 `
 
 const History = styled.div`
@@ -143,38 +159,45 @@ const History = styled.div`
     flex-direction: column;
 `
 
-const OrderButton = styled.button`
+const OrderButton = styled.div`
     font-size: 0.8em;
     margin-left: 4px;
-    background-color: inherit;
-    width: 2em;
-    height: 2em;
-    color: ${stdPalette[1]};
-    border: 0px;
     font-weight: bold;
     transition: transform 0.5s ease;
     transform: rotate(${({down}) => {return (down) ? 0 : 180 }}deg)
 `
 
+const RestartWrapper = styled.div`
+    color: ${stdPalette[0]};
+    background-color: ${stdPalette[1]};   
+    font-size: 4em;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    box-shadow: ${stdShadow};
+    cursor: pointer;
+`
+
+const initialState = {
+    history: [{
+        squares: Array(9).fill(null),
+    }],
+    xIsNext: true,
+    stepNumber: 0,
+    ascending: true,
+}
+
 export default class Game extends React.Component {
     // class constructor
     constructor(props){
         super(props)
-        this.state = {
-            history: [{
-                squares: Array(9).fill(null),
-            }],
-            xIsNext: true,
-            stepNumber: 0,
-            ascending: true,
-        }
+        this.state = {...initialState, firstMove: true}
     }
 
     // callback function called when a click is performed on a square
     handleClick(i) {
         const history = this.state.history.slice(0, this.state.stepNumber+1)
         const squares = history[history.length-1].squares.slice()
-
         // ignore click when game over or square already filled
         if (gameOver(squares)[0] || squares[i]){
             return;
@@ -188,7 +211,8 @@ export default class Game extends React.Component {
         this.setState({
             history: history,
             xIsNext: !this.state.xIsNext,
-            stepNumber: history.length-1
+            stepNumber: history.length-1,
+            firstMove: false
         })
     }
 
@@ -205,6 +229,11 @@ export default class Game extends React.Component {
         this.setState({
             ascending: !this.state.ascending
         })
+    }
+
+    // restart button
+    handleRestart(){
+        this.setState(initialState)
     }
 
     renderTable(step, stepIndex){
@@ -266,34 +295,41 @@ export default class Game extends React.Component {
         }
 
         return (
-            <SuperWrapper firstMove={this.state.history.length == 1}>
-                <TitleWrapper>
-                    <Title>
-                        TIC TAC TOE
-                    </Title>
-                    <SubTitle>
-                        Created by: BortoBoy
-                    </SubTitle>
-                </TitleWrapper>
+            <SuperWrapper firstMove={this.state.firstMove}>
                 <GameWrapper>
-                    <Board
-                        squares={current.squares}
-                        onClick={(i) => this.handleClick(i)}
-                        winnerSquares={winnerSquares}
-                    />
-                </GameWrapper>
-                <GameInfo>
+                    <div>
+                        <Title>
+                            TIC TAC TOE
+                        </Title>
+                        <SubTitle>
+                            Created by: BortoBoy
+                        </SubTitle>
+                    </div>
+                    <BoardWrapper>
+                        <Board
+                            squares={current.squares}
+                            onClick={(i) => this.handleClick(i)}
+                            winnerSquares={winnerSquares}
+                        />
+                    </BoardWrapper>
                     <Status>{ status }</Status>
-                    <HistoryWrapper>
-                        <HistoryTitle onClick={() => this.handleSort()}>
-                            History
-                            <OrderButton down={!this.state.ascending}>
-                                <AiFillCaretDown />
-                            </OrderButton>
-                        </HistoryTitle>
-                        <History reversed={!this.state.ascending}>{this.renderMoves()}</History>
-                    </HistoryWrapper>
-                </GameInfo>
+                    <RestartWrapper onClick={() => this.handleRestart()}>
+                        <MdRestartAlt />
+                    </RestartWrapper>
+                </GameWrapper>
+                { (this.state.history.length > 1) ? (
+                    <GameInfo>
+                            <HistoryWrapper>
+                                <HistoryTitle onClick={() => this.handleSort()}>
+                                History
+                                <OrderButton down={!this.state.ascending}>
+                                    <AiFillCaretDown />
+                                </OrderButton>
+                            </HistoryTitle>
+                            <History reversed={!this.state.ascending}>{this.renderMoves()}</History>
+                        </HistoryWrapper>
+                    </GameInfo>
+                ) : "" }
             </SuperWrapper>
         )
     }
