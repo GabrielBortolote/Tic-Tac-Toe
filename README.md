@@ -21,14 +21,9 @@ To make the things funnier I decided to create some improvement tasks and then w
 5. When someone wins, highlight the three squares that caused the win.
 6. When no one wins, display a message about the result being a draw.
 
-Beside these additional tasks I decided to create some challenging tasks by myself, here they go:
+Beside these additional tasks I decided to create one more task to challenge my basic front-end skills:
 
-7. Apply a beautiful CSS design instead of using a basic one.
-8. Use icons instead of simple X and O.
-9. Convert classes components into function components using react hooks.
-10. Trace a line over the game indicating the line that won the game.
-11. Make a fun animation with a congratulation warning on winning.
-12. Make it responsible.
+7. Apply a beautiful CSS design instead of using a basic one and make it responsible for smaller devices too.
 
 ### 1. Improve history display
 
@@ -96,25 +91,22 @@ function renderRows(){
 
 ### 4. Sort moves
 
-I added one more attribute into the game state attribute, the **ascending** attribute, then I created a callback function in a button to toggle this new state property. To change the order from ascending to descending I just used the function [Array.prototype.reverse()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse) and to change the automatic numbers inserted by the *ol* html tag I used the property [*reversed*](https://www.w3schools.com/tags/att_ol_reversed.asp). See the result:
-
-![game play to feature 4](./README_data/game_play_4.gif)
-
-### 5. Highlight victory
-
-To develop this feature I had to do some refactoring. First thing, the function that calculates the end of the game, the *gameOver* function, implemented inside *game.js* file was returning only the winner´s label, but now we need to know witch squares caused the victory, so I incremented the *gameOver* function return, passing this new information from *Game* to *Board* component and then rendering the squares on the board using a new class named *Highlight* for that squares that were the winning cause. See the result:
-
-![game play to feature 5](./README_data/game_play_5.gif)
-
-### 6. Draw
-
+I added one more attribute into the game state attribute, the **ascending** attribute, then I created a callback function in a button to toggle this new state property. To change the order from ascending to descending I just used the function [Array.prototype.reverse()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reverse) and to change the automatic numbers inserted by the *ol* html tag I us12
 This one is pretty simple, inside the *gameOver* function I added an if statement to check if there is no empty square and nobody won, so the returned value are going to be **draw**:
 
 ![game play to feature 6](./README_data/game_play_6.gif)
 
 ### 7. Styles
 
-This feature is the most interesting for me.
+This feature is the most interesting for me. I used styled components to make a better front-end layer to the game. Using flex-box wrap property I was able to implement a simple responsible design, check it out:
+
+![game play to feature 7](./README_data/game_play_7.gif)
+
+For mobile:
+
+![game play to feature 8](./README_data/game_play_8.gif)
+
+I used the **Mobile First** approach, because is easier to implement.
 
 ----------------------
 
