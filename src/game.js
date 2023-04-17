@@ -1,6 +1,7 @@
 // third
 import React from 'react'
 import styled from 'styled-components'
+import { AiFillCaretDown } from 'react-icons/ai';
 
 // local
 import Board from './board.js'
@@ -10,7 +11,8 @@ import palettes from './styles/palettes.js'
 const stdPalette = palettes.defaultPalette
 const initialPaddingTop = 18
 const SuperWrapper = styled.div`
-    width: 100%;
+    width: 100vw;
+    overflow: hidden;
     padding-top: ${({firstMove}) =>{
         return (firstMove) ? initialPaddingTop : 0
     }}vh;
@@ -50,8 +52,7 @@ const GameWrapper = styled.div`
 `
 
 const GameInfo = styled.div`
-    width: 90%;
-    padding: 0 5%;
+    width: 100%;
     margin-top: 2vh;
     font-size: 4vh;
     display: flex;
@@ -90,6 +91,18 @@ const MoveTable = styled.table`
     }
 `
 
+const TableWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`
+
+const TableIndex = styled.div`
+    font-size: 1em;
+    margin-right: 0.5em;
+    color: ${stdPalette[1]}; 
+`
+
 const MoveRow = styled.tr`
     margin-bottom: 8px;
 `
@@ -111,14 +124,36 @@ const MoveSquare = styled.td`
 `
 
 const HistoryWrapper = styled.div`
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding-bottom: 0.5em;
+`
+    
+const HistoryTitle = styled.span`
+    font-size: 1em;
+    color: ${stdPalette[1]};
+    padding: 0.5em 0;
+    cursor: pointer;
 `
 
 const History = styled.div`
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
+    flex-direction: column;
+`
+
+const OrderButton = styled.button`
+    font-size: 0.8em;
+    margin-left: 4px;
+    background-color: inherit;
+    width: 2em;
+    height: 2em;
+    color: ${stdPalette[1]};
+    border: 0px;
+    font-weight: bold;
+    transition: transform 0.5s ease;
+    transform: rotate(${({down}) => {return (down) ? 0 : 180 }}deg)
 `
 
 export default class Game extends React.Component {
@@ -186,18 +221,23 @@ export default class Game extends React.Component {
             }
             rows.push(<MoveRow key={i}>{squares}</MoveRow>)
         }
-        return <MoveTable
-            current={stepIndex == this.state.stepNumber}
-            onClick={() => this.jumpTo(stepIndex)}
-        ><tbody>
-            {rows}
-        </tbody></MoveTable>
+        return <TableWrapper>
+            <TableIndex>{stepIndex}. </TableIndex>
+
+            <MoveTable
+                current={stepIndex == this.state.stepNumber}
+                onClick={() => this.jumpTo(stepIndex)}
+            ><tbody>
+                {rows}
+            </tbody></MoveTable>
+        </TableWrapper>
+        
     }
 
     renderMoves(){
         const history = this.state.history
         
-        const moves = history.map((element, i) => {
+        let moves = history.map((element, i) => {
             // avoid rendering first element on history. Because is always empty
             if (i !== 0) {
                 return this.renderTable(element, i)
@@ -245,9 +285,12 @@ export default class Game extends React.Component {
                 <GameInfo>
                     <Status>{ status }</Status>
                     <HistoryWrapper>
-                        {/* <button onClick={() => this.handleSort()}>
-                            {(!this.state.ascending) ? 'Ascending' : 'Descending'}
-                        </button> */}
+                        <HistoryTitle onClick={() => this.handleSort()}>
+                            History
+                            <OrderButton down={!this.state.ascending}>
+                                <AiFillCaretDown />
+                            </OrderButton>
+                        </HistoryTitle>
                         <History reversed={!this.state.ascending}>{this.renderMoves()}</History>
                     </HistoryWrapper>
                 </GameInfo>
