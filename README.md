@@ -1,5 +1,9 @@
 # TIC TAC TOE
 
+## Deploy link
+
+[Go to the game](https://gabrielbortolote.github.io/Tic-Tac-Toe/)
+
 ## Motivation
 
 This project was created to practice react front end skills. The full tutorial to develop this game using react was provided by reactjs.org at this [link](https://legacy.reactjs.org/tutorial/tutorial.html), please check it out if you want to build your own tic tac toe using react. The tutorial introduces several react functionalities, tools and good practices, like using **state** attribute to let the react js engine to know whenever to update an element in the DOM. The main goal of the tutorial is to create a game as simple as possible, buuut my goal here is to test my front-end skills deeply (this time using react) so I decided to improve the game.
